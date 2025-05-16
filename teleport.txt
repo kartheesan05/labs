@@ -1,0 +1,53 @@
+To add a **Teleportation Area** to the floor in a **Unity VR project** (using the XR Interaction Toolkit), follow these steps:
+
+---
+
+### ✅ Prerequisites:
+
+* Unity with **XR Interaction Toolkit** installed.
+* You already have a **VR Rig / XR Origin** set up.
+* The floor has a **Collider** (like a `MeshCollider` or `BoxCollider`).
+
+---
+
+### 🔧 Steps to Add a Teleportation Area:
+
+1. **Select the Floor Object** (or the object you want the player to teleport on).
+
+2. Make sure it has a **Collider**:
+
+   * If it doesn't, right-click the object → *3D Object* → *Plane* (or use existing geometry).
+   * Add a `BoxCollider` or `MeshCollider` from the **Inspector**.
+
+3. **Add the Teleportation Area Component**:
+
+   * With the floor object selected, click **Add Component** → search for **Teleportation Area** → add it.
+
+4. **Assign the Teleportation Provider**:
+
+   * In your **XR Origin (XR Rig)** or XR Interaction Manager GameObject, there should be a **Teleportation Provider** component.
+   * Make sure the **XR Interaction Manager** is referenced in both the XR Rig and the Teleportation Area.
+
+5. **Set Up Input for Teleporting**:
+
+   * Make sure you’ve set up **Input Actions** for teleportation in your **XR Device Simulator** or your actual VR controller (usually via the **XR Default Input Actions** asset).
+   * Specifically, the "Teleport Mode Activate" action (like pressing the joystick/thumbstick) must be configured.
+
+---
+
+### 🧪 Test It:
+
+* Enter **Play Mode** in Unity with your headset on.
+* Use the controller teleport input (e.g., thumbstick press).
+* Aim at the floor, and you should see the **teleportation reticle** appear.
+* Release to teleport.
+
+---
+
+### ⚠️ Tips:
+
+* The material of the floor can affect visibility; use a **transparent shader** if you want the teleport area invisible but still functional.
+* You can also add **Teleportation Anchors** if you want to teleport to fixed spots rather than free areas.
+
+Let me know if you're using OpenXR or the legacy XR plugin system, and I can tailor the input setup further.
+
