@@ -1,0 +1,94 @@
+To display a **UI message that says "Correct!"** when the **correct object is placed in a socket**, follow this setup using **XR Interaction Toolkit** in Unity:
+
+---
+
+## 🎯 GOAL
+
+When the user places a specific object (like a sphere) into an `XR Socket Interactor`, a **“Correct!”** message appears on screen (or in world-space UI).
+
+---
+
+## ✅ STEP-BY-STEP GUIDE
+
+### 1. 🧱 Create the UI Text
+
+1. In the Hierarchy:
+   `Right-click > UI > Text - TextMeshPro`
+2. Set the **Canvas** to **World Space** if you're in VR
+
+   * Change **Render Mode** to `World Space`
+   * Resize and position it so it's visible to the user
+3. Rename it to `CorrectMessage`
+4. Change text to `"Correct!"`
+5. Disable it by default: in the Inspector → uncheck `CorrectMessage > GameObject > Set Active`
+
+---
+
+### 2. 🛠️ Create a New Script: `SocketCheck.cs`
+
+```csharp
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+
+public class SocketCheck : MonoBehaviour
+{
+    public GameObject correctObject;       // Object that triggers the "Correct!" message
+    public GameObject correctMessageUI;    // UI Text or Canvas to show
+
+    private XRSocketInteractor socket;
+
+    void Start()
+    {
+        socket = GetComponent<XRSocketInteractor>();
+    }
+
+    private void OnSelectEntered(XRBaseInteractable interactable)
+    {
+        if (interactable.gameObject == correctObject)
+        {
+            if (correctMessageUI)
+                correctMessageUI.SetActive(true);
+        }
+    }
+
+    private void OnSelectExited(XRBaseInteractable interactable)
+    {
+        if (interactable.gameObject == correctObject)
+        {
+            if (correctMessageUI)
+                correctMessageUI.SetActive(false);
+        }
+    }
+}
+```
+
+---
+
+### 3. ⚙️ Attach and Configure
+
+1. Select your **XR Socket Interactor**
+2. Attach the `SocketCheck` script to it
+3. Assign:
+
+   * `Correct Object` → drag the sphere or whatever the correct object is
+   * `Correct Message UI` → drag the `CorrectMessage` Text object
+
+---
+
+### 4. ✅ Result
+
+When the correct object is placed into the socket:
+
+* The **“Correct!”** message appears.
+* When it's removed, the message disappears.
+
+---
+
+## 🧩 Bonus Ideas:
+
+* Want the message to **fade in/out**?
+* Want it to appear only **once**?
+* Want to play a **sound** or trigger animation?
+
+Just ask — I’ll walk you through that as well.
+
