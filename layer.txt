@@ -1,0 +1,204 @@
+To use a **sphere as a button** in Unity to **toggle anatomy layers** (e.g., skin, muscles, skeleton), follow this VR-friendly setup using the **XR Interaction Toolkit**.
+
+---
+
+## 🎯 Goal
+
+Click or touch a 3D sphere in VR, and toggle the visibility of a specific layer (like `SkinLayer`).
+
+---
+
+## ✅ STEP-BY-STEP (Using XR Toolkit)
+
+### 1. 🧱 Prepare the Anatomy Layers
+
+* In the Hierarchy, make sure each layer is a GameObject:
+
+  ```
+  AnatomyModel
+  ├── SkinLayer
+  ├── MuscleLayer
+  └── SkeletonLayer
+  ```
+
+---
+
+### 2. 🔵 Add a Sphere Button in the Scene
+
+* Right-click in Hierarchy → `3D Object > Sphere`
+* Resize to \~0.2 scale
+* Rename to `SkinToggleSphere`
+* Move it in front of the player or on a table
+
+---
+
+### 3. 🧠 Add XR Interactable to Sphere
+
+1. Select `SkinToggleSphere`
+2. Add component: `XR Simple Interactable`
+3. In the **Events** section, find `Select Entered` and click `+`
+4. Drag in a controller GameObject (we’ll make this in Step 4) and assign a toggle function
+
+> 💡 This allows the sphere to act like a clickable VR button with ray or hand interactor.
+
+---
+
+### 4. 🧩 Create the Toggle Script
+
+Create a script called `AnatomyToggleButton.cs`:
+
+```csharp
+using UnityEngine;
+
+public class AnatomyToggleButton : MonoBehaviour
+{
+    public GameObject targetLayer;
+
+    public void ToggleLayer()
+    {
+        if (targetLayer)
+            targetLayer.SetActive(!targetLayer.activeSelf);
+    }
+}
+```
+
+---
+
+### 5. ⚙️ Setup in Inspector
+
+1. Create an empty GameObject → name it `LayerToggleManager`
+2. Attach the `AnatomyToggleButton` script
+3. Drag `SkinLayer` into the `targetLayer` field
+
+---
+
+### 6. 🔗 Link to Sphere's Interactable Event
+
+1. Select `SkinToggleSphere`
+2. In **XR Simple Interactable → Select Entered**, drag in the `LayerToggleManager`
+3. Choose: `AnatomyToggleButton → ToggleLayer()`
+
+---
+
+### 🧪 Test in VR
+
+When you hover and select the sphere using your VR controller (ray or hand), the `SkinLayer` will toggle on/off.
+
+---
+
+### 🧠 Repeat for Other Layers
+
+Duplicate the sphere:
+
+* Rename to `MuscleToggleSphere`, `SkeletonToggleSphere`, etc.
+* Change the color/material if you want
+* Point each to the correct targetLayer in a different `AnatomyToggleButton` component
+
+---
+
+Let me know if you want:
+
+* **Sound FX**
+* **Glow or pulse effect on hover**
+* **Highlight on press**
+* **Haptic feedback**
+
+I’ll walk you through it!
+
+
+To **add a button to hide/show different anatomy layers** (like skin, muscles, skeleton) in Unity — either for desktop or VR — here’s how to do it step-by-step:
+
+---
+
+## 🧠 Goal
+
+Click a button to **toggle visibility** of individual anatomy layers represented as GameObjects.
+
+---
+
+## ✅ STEP-BY-STEP GUIDE
+
+### 🧱 1. Set Up Anatomy Layers
+
+In your **Hierarchy**, make sure each layer is a separate GameObject:
+
+```
+AnatomyRoot
+├── SkinLayer
+├── MuscleLayer
+└── SkeletonLayer
+```
+
+---
+
+### 🖱️ 2. Add UI Buttons (Desktop or VR Canvas)
+
+1. Right-click in Hierarchy → `UI > Button - TextMeshPro`
+2. Rename the button to `ToggleSkinButton`
+3. Change the button text to “Toggle Skin”
+4. Repeat for **ToggleMuscleButton** and **ToggleSkeletonButton**
+
+> 📝 Tip: If you're using VR, make sure the Canvas is set to **World Space**, and the buttons are large enough for easy interaction with ray interactor or hand.
+
+---
+
+### 🧩 3. Create the Toggle Script
+
+Create a script named `AnatomyToggleController.cs` and attach it to a GameObject (e.g., `LayerManager`):
+
+```csharp
+using UnityEngine;
+
+public class AnatomyToggleController : MonoBehaviour
+{
+    public GameObject skinLayer;
+    public GameObject muscleLayer;
+    public GameObject skeletonLayer;
+
+    public void ToggleSkin()
+    {
+        if (skinLayer) skinLayer.SetActive(!skinLayer.activeSelf);
+    }
+
+    public void ToggleMuscle()
+    {
+        if (muscleLayer) muscleLayer.SetActive(!muscleLayer.activeSelf);
+    }
+
+    public void ToggleSkeleton()
+    {
+        if (skeletonLayer) skeletonLayer.SetActive(!skeletonLayer.activeSelf);
+    }
+}
+```
+
+---
+
+### 🔗 4. Connect Buttons to the Script
+
+1. Create an empty GameObject → name it `LayerManager`
+2. Attach the `AnatomyToggleController` script
+3. Drag the corresponding objects (`SkinLayer`, `MuscleLayer`, `SkeletonLayer`) into the script fields
+
+Then for **each button**:
+
+* In the **Button > OnClick()** event list:
+
+  * Click the `+` button
+  * Drag the `LayerManager` into the object field
+  * Choose the appropriate function:
+
+    * `ToggleSkinButton` → `AnatomyToggleController.ToggleSkin()`
+    * `ToggleMuscleButton` → `ToggleMuscle()`
+    * `ToggleSkeletonButton` → `ToggleSkeleton()`
+
+---
+
+### 🧪 Test It
+
+Click the buttons in Play mode or using your VR controller (ray interactor) — layers will toggle visibility.
+
+---
+
+Want to use **3D cube buttons instead of UI**, or add **animations or sounds**? Just ask!
+
