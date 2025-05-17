@@ -1,0 +1,87 @@
+To **add a light in the room** and make it **turn ON/OFF when the player enters a trigger zone**, follow these steps in Unity:
+
+---
+
+## ✅ STEP-BY-STEP GUIDE
+
+### 🧱 1. Add a Light to the Scene
+
+1. In the Hierarchy:
+   `Right-click > Light > Point Light` *(or Spot Light / Directional Light based on your scene)*
+2. Position it where you want the light to appear in the room
+3. Rename it (e.g., `RoomLight`)
+4. By default, set it to **enabled** or **disabled** based on your preference:
+
+   * Inspector → uncheck `Light > Enabled` if you want it off initially
+
+---
+
+### 🟦 2. Create a Trigger Zone
+
+1. In the Hierarchy:
+   `Right-click > 3D Object > Cube`
+2. Resize and position it where the player will enter
+3. In the Inspector:
+
+   * Check ✅ `Is Trigger`
+   * Optionally set the **Mesh Renderer** to disabled to hide the cube
+   * Rename it to `LightTriggerZone`
+
+---
+
+### 🧩 3. Create the Script: `LightToggleTrigger.cs`
+
+```csharp
+using UnityEngine;
+
+public class LightToggleTrigger : MonoBehaviour
+{
+    public Light roomLight;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            roomLight.enabled = !roomLight.enabled;
+        }
+    }
+}
+```
+
+---
+
+### ⚙️ 4. Setup in Inspector
+
+1. Select `LightTriggerZone`
+2. Attach the `LightToggleTrigger` script
+3. Drag the `RoomLight` into the `roomLight` field in the Inspector
+
+---
+
+### 🎯 5. Tag the Player
+
+1. Select your **XR Rig** or **Main Camera** (whichever has a collider)
+2. Add a `Capsule Collider` or any collider if it doesn't already have one
+3. Set its **Tag** to `Player`
+
+   * If `Player` doesn’t exist:
+     Top menu → `Tags & Layers > Add Tag > +` → Name it `Player` → Assign it to your XR rig
+
+---
+
+### ✅ Result
+
+When the player enters the trigger zone:
+
+* The light will **toggle ON/OFF**
+
+---
+
+Let me know if you want to:
+
+* Only **turn ON** when entering and **OFF when exiting**
+* Trigger **multiple lights**
+* Use **animation or dimming effects**
+
+Happy to help!
+
