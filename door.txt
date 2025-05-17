@@ -1,0 +1,104 @@
+To **make a door model swing open when the user presses a nearby button (e.g., a cube in VR)** using Unity and XR Interaction Toolkit, follow these steps:
+
+---
+
+## ✅ OVERVIEW
+
+* A **door** GameObject rotates on its hinge when activated.
+* A nearby **cube** acts as a physical **button**.
+* Pressing the button triggers an animation or code to rotate the door.
+
+---
+
+## 🧱 1. Set Up the Door
+
+1. Add your **door model** to the scene.
+2. Place it inside an empty GameObject called `DoorPivot`:
+
+   * Create an empty GameObject → name it `DoorPivot`
+   * Position `DoorPivot` at the **hinge side** of the door
+   * Make the door a **child** of `DoorPivot`
+3. Rotate `DoorPivot` to swing the door open:
+
+   * For testing: rotate Y by \~90° (or -90°) to simulate opening.
+
+---
+
+## 🔘 2. Create the Button (Cube)
+
+1. `Right-click > 3D Object > Cube`
+2. Scale it to look like a button (e.g., 0.2 x 0.1 x 0.2)
+3. Add a **collider** (if not already)
+4. Add a `XR Grab Interactable` or `XR Simple Interactable` (e.g., for poke/press)
+
+---
+
+## 💡 3. Write the Script: `DoorButton.cs`
+
+```csharp
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+
+public class DoorButton : MonoBehaviour
+{
+    public Transform doorPivot;
+    public float openAngle = 90f;
+    public float openSpeed = 2f;
+    private bool isOpen = false;
+    private bool isAnimating = false;
+
+    public void ToggleDoor()
+    {
+        if (!isAnimating)
+            StartCoroutine(RotateDoor());
+    }
+
+    private System.Collections.IEnumerator RotateDoor()
+    {
+        isAnimating = true;
+        float targetAngle = isOpen ? 0f : openAngle;
+        float currentAngle = doorPivot.localEulerAngles.y;
+        float elapsed = 0f;
+
+        while (elapsed < 1f)
+        {
+            elapsed += Time.deltaTime * openSpeed;
+            float angle = Mathf.LerpAngle(currentAngle, targetAngle, elapsed);
+            doorPivot.localEulerAngles = new Vector3(0f, angle, 0f);
+            yield return null;
+        }
+
+        isOpen = !isOpen;
+        isAnimating = false;
+    }
+}
+```
+
+---
+
+## ⚙️ 4. Hook It Up
+
+1. Select the **button cube**
+2. Add a `XR Simple Interactable` component
+3. In the **Events → Select Entered()**, click `+`
+4. Drag the **button** (with the script) into the field
+5. Choose `DoorButton → ToggleDoor()`
+
+---
+
+## 🎉 Result
+
+When the user presses the cube:
+
+* The door swings open or closed smoothly.
+
+---
+
+## 🧩 Optional Enhancements
+
+* Add a **sound effect** when the door opens
+* Use an **animation clip** instead of rotating with code
+* Make the cube light up when nearby using hover events
+
+Want me to help with those too?
+
